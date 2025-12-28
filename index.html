@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway - Merah Biru</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-red: #e63946;
+            --dark-red: #d00000;
+            --primary-blue: #1d3557;
+            --light-blue: #457b9d;
+            --background: #f8f9fa;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+
+        body {
+            background-color: var(--background);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(to right, var(--primary-blue), var(--light-blue));
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background-color: var(--primary-red);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffccd5;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .payment-form-container {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid var(--primary-red);
+        }
+
+        .payment-info-container {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid var(--primary-blue);
+        }
+
+        h2 {
+            color: var(--primary-blue);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        h3 {
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--light-blue);
+            box-shadow: 0 0 0 3px rgba(29, 53, 87, 0.1);
+        }
+
+        .payment-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .payment-option {
+            flex: 1;
+            min-width: 120px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option:hover {
+            border-color: var(--light-blue);
+            background-color: rgba(69, 123, 157, 0.05);
+        }
+
+        .payment-option.active {
+            border-color: var(--primary-red);
+            background-color: rgba(230, 57, 70, 0.05);
+        }
+
+        .payment-option i {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--primary-blue);
+        }
+
+        .account-info {
+            background-color: rgba(29, 53, 87, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .account-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-red);
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, var(--primary-red), var(--dark-red));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(to right, var(--dark-red), #b00000);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+        }
+
+        /* Contact Info */
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .contact-icon {
+            background-color: var(--primary-blue);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .contact-details h4 {
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+
+        .telegram-link {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .telegram-link:hover {
+            color: var(--dark-red);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 25px 0;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 15px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 15px;
+            color: #ffccd5;
+        }
+
+        .copyright {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #adb5bd;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .payment-option {
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .payment-form-container, .payment-info-container {
+                padding: 20px;
+            }
+            
+            .account-number {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <span>PAYMENT GATEWAY</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="#"><i class="fas fa-info-circle"></i> Informasi</a></li>
+                    <li><a href="#"><i class="fas fa-history"></i> Riwayat</a></li>
+                    <li><a href="#"><i class="fas fa-headset"></i> Bantuan</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Payment Form -->
+            <div class="payment-form-container">
+                <h2><i class="fas fa-money-check-alt"></i> Form Pembayaran</h2>
+                
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" id="nama" placeholder="Masukkan nama lengkap" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Masukkan alamat email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="jumlah">Jumlah Pembayaran (IDR)</label>
+                        <input type="number" id="jumlah" placeholder="Masukkan jumlah pembayaran" min="10000" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Metode Pembayaran</label>
+                        <div class="payment-options">
+                            <div class="payment-option active" data-method="bank">
+                                <i class="fas fa-university"></i>
+                                <div>Transfer Bank</div>
+                            </div>
+                            <div class="payment-option" data-method="e-wallet">
+                                <i class="fas fa-wallet"></i>
+                                <div>E-Wallet</div>
+                            </div>
+                            <div class="payment-option" data-method="card">
+                                <i class="fas fa-credit-card"></i>
+                                <div>Kartu Kredit</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="catatan">Catatan (Opsional)</label>
+                        <textarea id="catatan" rows="3" placeholder="Tambahkan catatan jika diperlukan" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px;"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> LANJUTKAN PEMBAYARAN
+                    </button>
+                </form>
+                
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <div class="contact-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Butuh Bantuan?</h4>
+                        <p>Hubungi kami melalui Telegram:</p>
+                        <a href="https://t.me/boyjutawan" class="telegram-link" target="_blank">
+                            <i class="fab fa-telegram"></i> t.me/boyjutawan
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Payment Information -->
+            <div class="payment-info-container">
+                <h2><i class="fas fa-info-circle"></i> Informasi Pembayaran</h2>
+                
+                <h3><i class="fas fa-hand-holding-usd"></i> Instruksi Pembayaran</h3>
+                <ol style="margin-left: 20px; margin-bottom: 20px;">
+                    <li>Isi formulir pembayaran di samping dengan data yang benar</li>
+                    <li>Pilih metode pembayaran yang diinginkan</li>
+                    <li>Lakukan transfer ke rekening tujuan berikut</li>
+                    <li>Simpan bukti transfer untuk konfirmasi</li>
+                </ol>
+                
+                <h3><i class="fas fa-university"></i> Rekening Tujuan</h3>
+                <div class="account-info">
+                    <p><strong>Nama Organisasi:</strong> NO ACCOUNT TOUCH NGO</p>
+                    <p><strong>Nomor Rekening:</strong></p>
+                    <div class="account-number">100807472080</div>
+                    <p><strong>Bank:</strong> Bank Contoh (BCA/Mandiri/BNI/BRI)</p>
+                    <p><strong>Catatan:</strong> Harap transfer tepat sesuai jumlah yang tertera</p>
+                </div>
+                
+                <h3><i class="fas fa-shield-alt"></i> Keamanan Transaksi</h3>
+                <ul style="margin-left: 20px;">
+                    <li>Sistem pembayaran terenkripsi dengan standar keamanan tinggi</li>
+                    <li>Data pribadi Anda akan terlindungi dengan aman</li>
+                    <li>Transaksi diproses secara otomatis dan real-time</li>
+                    <li>Garansi uang kembali jika terjadi kendala teknis</li>
+                </ul>
+                
+                <div style="margin-top: 30px; padding: 15px; background-color: rgba(29, 53, 87, 0.05); border-radius: 8px; border-left: 4px solid var(--primary-blue);">
+                    <h4><i class="fas fa-clock"></i> Waktu Proses</h4>
+                    <p>Pembayaran akan diproses dalam waktu 1x24 jam setelah transfer diterima. Jika mengalami kendala, silakan hubungi kontak yang tersedia.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-info">
+                <div class="footer-section">
+                    <h4>LAYANAN</h4>
+                    <p>Pembayaran Online</p>
+                    <p>Transfer Antar Bank</p>
+                    <p>E-Wallet Integration</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>KEAMANAN</h4>
+                    <p>SSL Encryption</p>
+                    <p>Data Protection</p>
+                    <p>Verified Payment</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>HUBUNGI KAMI</h4>
+                    <p>Email: support@paymentgateway.id</p>
+                    <p>Telegram: t.me/boyjutawan</p>
+                    <p>Jam Operasional: 08.00 - 22.00 WIB</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Payment Gateway. Hak Cipta Dilindungi. Tema Merah Biru.</p>
+                <p>NO ACCOUNT TOUCH NGO: 100807472080</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Payment method selection
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                paymentOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Form submission
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const nama = document.getElementById('nama').value;
+            const email = document.getElementById('email').value;
+            const jumlah = document.getElementById('jumlah').value;
+            const metode = document.querySelector('.payment-option.active').dataset.method;
+            
+            // Show confirmation
+            alert(`Pembayaran Berhasil Diajukan!\n\nNama: ${nama}\nEmail: ${email}\nJumlah: Rp ${jumlah}\nMetode: ${metode}\n\nSilakan lanjutkan pembayaran ke rekening:\nNO ACCOUNT TOUCH NGO: 100807472080`);
+            
+            // Reset form
+            document.getElementById('paymentForm').reset();
+            
+            // Reset payment method to default
+            paymentOptions.forEach(opt => opt.classList.remove('active'));
+            document.querySelector('.payment-option[data-method="bank"]').classList.add('active');
+        });
+
+        // Copy account number to clipboard
+        const accountNumber = document.querySelector('.account-number');
+        accountNumber.addEventListener('click', function() {
+            const textToCopy = '100807472080';
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = this.textContent;
+                this.textContent = 'Tersalin ke clipboard!';
+                this.style.color = 'green';
+                
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.style.color = '';
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
